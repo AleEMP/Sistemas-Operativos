@@ -10,11 +10,12 @@
 
 int main() {
    pid_t child_pid;
+   int fd2[2];
    int fd[2];
-   if (pipe(fd) == -1) {
-       perror("pipe");
-       return 1;
-   }
+
+   pipe(fd);
+   pipe(fd2);
+
    child_pid = fork();
 
    // Child process
@@ -35,7 +36,15 @@ int main() {
         close(fd[1]);
         fclose(file);
 
-   } else {
+        close(fd2[1]);
+        FILE * file2;
+        file2=fopen("cont.txt","w");
+        int num;
+        read(fd2[0],&num,sizeof(num));
+        fprintf(file2,"%d\n",num);
+        fclose(file2);
+        close(fd2[0]);
+} else {
       system("echo 'padre'");
       system("echo $$");
 
@@ -59,6 +68,10 @@ int main() {
       }
         fclose(file);
         close(fd[0]);
+
+        close(fd2[0]);
+        write(fd2[1],&i,sizeof(i));
+        close(fd2[1]);
         wait(NULL);
    }
    return 0;
