@@ -30,22 +30,22 @@ int main()
 
     key = 1234;
 
-    if ((msqid = msgget(key, msgflg)) < 0)   //Get the message queue ID for the given key
+    if ((msqid = msgget(key, msgflg)) < 0)
       die("msgget");
-
-    //Message Type
+	
     int opcion,pid;
     do {
         printf("\n--- Menú ---\n");
         printf("1. Signal 2 SIGINT\n");
-        printf("2. Signal 9 SIGHUP\n");
-        printf("3. Signal 18 SIGCONT\n");
-	printf("4. Signal 19 SIGSTOP\n");
-	printf("5. Salir\n");
+	printf("2. Signal 9 SIGKILL\n");
+        printf("3. Signal 15 SIGTERM\n");
+	printf("4. Signal 18 SIGCONT\n");
+	printf("5. Signal 19 SIGSTOP\n");
+	printf("6. Salir\n");
         printf("Selecciona una opción:");
         scanf("%d", &opcion);
 	printf("%d",opcion);
-	if(opcion>=1 && opcion<=4){
+	if(opcion>=1 && opcion<=5){
 		switch(opcion) {
 		       	case 1:
 				sbuf.stype = 2;
@@ -56,13 +56,17 @@ int main()
 				sbuf.mtype = 1;
 			       	break;
 		       	case 3:
+				sbuf.stype =15;
+				sbuf.mtype = 1;
+			       	break;
+			case 4:
 				sbuf.stype =18;
 				sbuf.mtype = 2;
 			       	break;
-			case 4:
+			case 5:
 				sbuf.stype =19;
-				sbuf.mtype = 2;
-			       	break;
+                                sbuf.mtype = 2;
+                                break;
 			default:
 				printf("Opción no válida, intenta de nuevo.\n");
 		}
@@ -75,5 +79,5 @@ int main()
 		 }
 		 printf("Mensaje enviado: PID = %d, Tipo de senal = %d\n", sbuf.pid, sbuf.stype);
 	}
-    } while(opcion != 5);
+    } while(opcion != 6);
 }
