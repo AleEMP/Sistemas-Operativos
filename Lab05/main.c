@@ -1,19 +1,20 @@
 #include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <signal.h>
-void sighandler(int);
+#include <unistd.h>
 
-int main () {
-   signal(SIGINT, sighandler);
-
-   while(1) {
-      printf("Going to sleep for a second...\n");
-      sleep(1);
-   }
-   return(0);
+void signal_handler(int signal_num) {
+    printf("Señal %d capturada\n", signal_num);
 }
 
-void sighandler(int signum) {
-   printf("Caught signal %d, coming out...\n", signum);
+int main() {
+    signal(SIGINT, signal_handler);  
+    signal(SIGKILL, signal_handler);   
+    signal(SIGTERM, signal_handler);
+    signal(SIGCONT, signal_handler);
+    signal(SIGSTOP, signal_handler);  
+    while (1) {
+        printf("Esperando señales...\n");
+        sleep(2); 
+    }
+    return 0;
 }
