@@ -1,0 +1,7 @@
+make
+sudo insmod hello-1.ko
+lsmod | egrep Alejandra
+sudo dmesg | egrep Alejandra
+sudo rmmod hello-1
+lsmod | egrep Alejandra
+sudo dmesg | egrep Alejandra
